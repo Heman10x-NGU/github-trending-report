@@ -1,0 +1,2 @@
+# Runtime dependencies for scripts/build.py.
+# Currently empty: the report generator uses only the Python standard library.
