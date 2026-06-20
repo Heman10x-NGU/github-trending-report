@@ -12,7 +12,7 @@ A short distribution plan for sharing GitHub Trending Report without sounding li
 
 | Channel | Link | Suggested title | Notes |
 |---|---|---|---|
-| Hacker News | https://news.ycombinator.com/submit | `Show HN: Searchable daily report of GitHub Trending repos by category` | Best single launch target. HN's Show HN guidance says the thing should be personally made, non-trivial, and easy to try without signups. This qualifies because the live report is usable immediately. |
+| Hacker News | https://news.ycombinator.com/submit | `Show HN: Searchable daily report of GitHub Trending repos by category` | Best single launch target. HN's Show HN guidance says the thing should be personally made, non-trivial, and easy to try without signups. This qualifies because the live report is usable immediately. Rewrite any notes below in your own voice before posting. |
 | r/github | https://www.reddit.com/r/github/ | `I built a searchable daily report for GitHub Trending repos` | Directly relevant. Lead with the GitHub Pages link, then repo link. Ask for feedback on categories. |
 | r/opensource | https://www.reddit.com/r/opensource/ | `Open-source GitHub Trending report: categories, search, repeat-appearance scoring` | Works if framed as an open-source utility, not a personal promo blast. |
 | r/SideProject | https://www.reddit.com/r/SideProject/ | `I made a daily GitHub Trending report to spot durable developer trends` | Good maker audience. Include why you built it and what feedback you want. |
@@ -30,13 +30,14 @@ A short distribution plan for sharing GitHub Trending Report without sounding li
 - `r/datasets`: avoid unless you publish a downloadable dataset/API beyond the generated HTML.
 - Broad startup communities: avoid for now. This is a developer utility, not a startup launch.
 
-## First HN Comment Draft
+## HN Comment Notes
 
-I built this because GitHub Trending is useful but hard to scan historically. The report groups trending repos by category, tracks repeat appearances, and labels projects as new/notable/rising/hot/legendary based on how often they appear.
+Do not copy-paste this to HN. Use it as a reminder, then write naturally in your own voice.
 
-It is intentionally simple: GitHub Actions pulls public trending snapshots from bonfy/github-trending, a Python stdlib script parses/categorizes them, and GitHub Pages serves the generated static report.
-
-I would especially like feedback on the category rules and whether repeat appearances are a useful signal for developer trend discovery.
+- Why: GitHub Trending is useful but hard to scan historically.
+- What it does: groups trending repos by category, tracks repeat appearances, and labels projects as new/notable/rising/hot/legendary.
+- Stack: GitHub Actions pulls public trending snapshots from bonfy/github-trending, a Python stdlib script parses/categorizes them, and GitHub Pages serves the generated static report.
+- Ask: feedback on category rules and whether repeat appearances are a useful signal for developer trend discovery.
 
 ## Reddit Post Body Draft
 
