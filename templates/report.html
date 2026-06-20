@@ -6,29 +6,38 @@
 <title>GitHub Trending Report</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* ================================================================
    Design System
    ================================================================ */
 :root {
-  --bg: #FAFAF9;
+  --bg: #F7F6F3;
+  --bg-alt: #FBFBFA;
   --card: #FFFFFF;
-  --border: #E8E8E5;
-  --text: #1A1A1A;
-  --text-secondary: #6B6B6B;
-  --text-tertiary: #9B9B9B;
-  --link: #2563EB;
-  --link-hover: #1D4ED8;
-  --sig-legendary: #DC2626;
-  --sig-hot: #2563EB;
-  --sig-rising: #7C3AED;
-  --sig-notable: #16A34A;
-  --sig-new: #CA8A04;
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  --border: #EAEAEA;
+  --divider: rgba(0,0,0,0.06);
+  --text: #2F3437;
+  --text-secondary: #787774;
+  --text-tertiary: #A09D97;
+  --link: #2F3437;
+  --link-hover: #111111;
+  --sig-legendary-bg: #FDEBEC;
+  --sig-legendary-text: #9F2F2D;
+  --sig-hot-bg: #E1F3FE;
+  --sig-hot-text: #1F6C9F;
+  --sig-rising-bg: #F3EFFE;
+  --sig-rising-text: #6B4FA0;
+  --sig-notable-bg: #EDF3EC;
+  --sig-notable-text: #346538;
+  --sig-new-bg: #FBF3DB;
+  --sig-new-text: #956400;
+  --font-sans: "SF Pro Display", "Geist Sans", "Helvetica Neue", system-ui, sans-serif;
+  --font-mono: "SF Mono", "JetBrains Mono", monospace;
   --radius: 8px;
   --radius-sm: 4px;
+  --shadow-subtle: 0 2px 8px rgba(0,0,0,0.04);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ================================================================
@@ -47,7 +56,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-a { color: var(--link); text-decoration: none; }
+a { color: var(--link); text-decoration: none; transition: color 0.15s ease; }
 a:hover { color: var(--link-hover); text-decoration: underline; }
 
 /* ================================================================
@@ -57,9 +66,10 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   position: sticky;
   top: 0;
   z-index: 100;
-  background: var(--card);
+  background: var(--bg-alt);
   border-bottom: 1px solid var(--border);
   padding: 12px 0;
+  backdrop-filter: blur(8px);
 }
 
 .header-inner {
@@ -77,6 +87,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   font-weight: 600;
   color: var(--text);
   white-space: nowrap;
+  letter-spacing: -0.02em;
 }
 
 .header-title span {
@@ -100,27 +111,30 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
 .hero {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 48px 24px 32px;
+  padding: 56px 24px 36px;
 }
 
 .hero-title {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 700;
   color: var(--text);
-  letter-spacing: -0.025em;
-  margin-bottom: 8px;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 10px;
 }
 
 .hero-subtitle {
   font-size: 1rem;
   color: var(--text-secondary);
-  margin-bottom: 32px;
+  margin-bottom: 36px;
+  max-width: 560px;
+  line-height: 1.5;
 }
 
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 16px;
+  gap: 12px;
 }
 
 .stat-card {
@@ -130,7 +144,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   padding: 20px;
   opacity: 0;
   transform: translateY(12px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
 }
 
 .stat-card.visible {
@@ -139,12 +153,12 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
 }
 
 .stat-label {
-  font-size: 0.75rem;
-  font-weight: 500;
+  font-size: 0.7rem;
+  font-weight: 600;
   color: var(--text-tertiary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .stat-value {
@@ -153,6 +167,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   font-family: var(--font-mono);
   color: var(--text);
   line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 
 .stat-detail {
@@ -169,7 +184,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   margin: 0 auto;
   padding: 0 24px 24px;
   position: sticky;
-  top: 53px;
+  top: 49px;
   z-index: 90;
   background: var(--bg);
 }
@@ -178,7 +193,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 16px;
+  padding: 14px 16px;
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
@@ -192,7 +207,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
 }
 
 .filter-label {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 600;
   color: var(--text-tertiary);
   text-transform: uppercase;
@@ -210,13 +225,14 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   color: var(--text);
   cursor: pointer;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%236B6B6B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23787774' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 8px center;
+  transition: border-color 0.15s ease;
 }
 
 .filter-select:focus {
-  outline: 2px solid var(--link);
+  outline: 2px solid var(--text);
   outline-offset: -1px;
 }
 
@@ -230,10 +246,11 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   border-radius: var(--radius-sm);
   background: var(--bg);
   color: var(--text);
+  transition: border-color 0.15s ease;
 }
 
 .filter-search:focus {
-  outline: 2px solid var(--link);
+  outline: 2px solid var(--text);
   outline-offset: -1px;
 }
 
@@ -267,6 +284,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   margin: 32px 0 16px;
   padding-bottom: 8px;
   border-bottom: 2px solid var(--border);
+  letter-spacing: -0.02em;
 }
 
 .section-heading .count {
@@ -291,13 +309,13 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 16px;
+  padding: 18px;
   display: flex;
   flex-direction: column;
   gap: 8px;
   opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  transform: translateY(12px);
+  transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out), border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .repo-card.visible {
@@ -307,6 +325,8 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
 
 .repo-card:hover {
   border-color: #D0D0CC;
+  box-shadow: var(--shadow-subtle);
+  transform: translateY(-1px);
 }
 
 .repo-header {
@@ -329,7 +349,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
 }
 
 .repo-name a:hover {
-  color: var(--link);
+  color: var(--link-hover);
   text-decoration: none;
 }
 
@@ -385,44 +405,39 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
 .sig-badge {
   display: inline-flex;
   align-items: center;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 600;
   font-family: var(--font-mono);
   text-transform: uppercase;
-  letter-spacing: 0.03em;
-  padding: 2px 8px;
-  border-radius: var(--radius-sm);
+  letter-spacing: 0.05em;
+  padding: 3px 10px;
+  border-radius: 100px;
   white-space: nowrap;
 }
 
 .sig-legendary {
-  background: #FEE2E2;
-  color: var(--sig-legendary);
-  border: 1px solid #FECACA;
+  background: var(--sig-legendary-bg);
+  color: var(--sig-legendary-text);
 }
 
 .sig-hot {
-  background: #DBEAFE;
-  color: var(--sig-hot);
-  border: 1px solid #BFDBFE;
+  background: var(--sig-hot-bg);
+  color: var(--sig-hot-text);
 }
 
 .sig-rising {
-  background: #EDE9FE;
-  color: var(--sig-rising);
-  border: 1px solid #DDD6FE;
+  background: var(--sig-rising-bg);
+  color: var(--sig-rising-text);
 }
 
 .sig-notable {
-  background: #DCFCE7;
-  color: var(--sig-notable);
-  border: 1px solid #BBF7D0;
+  background: var(--sig-notable-bg);
+  color: var(--sig-notable-text);
 }
 
 .sig-new {
-  background: #FEF9C3;
-  color: var(--sig-new);
-  border: 1px solid #FDE68A;
+  background: var(--sig-new-bg);
+  color: var(--sig-new-text);
 }
 
 /* ================================================================
@@ -434,13 +449,18 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   border-radius: var(--radius);
   background: var(--card);
   overflow: hidden;
+  transition: box-shadow 0.2s ease;
+}
+
+.category-section:hover {
+  box-shadow: var(--shadow-subtle);
 }
 
 .category-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 16px;
+  padding: 14px 18px;
   cursor: pointer;
   user-select: none;
   transition: background 0.15s ease;
@@ -460,23 +480,24 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   font-size: 0.95rem;
   font-weight: 600;
   color: var(--text);
+  letter-spacing: -0.01em;
 }
 
 .category-count {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
-  font-weight: 500;
+  font-size: 0.7rem;
+  font-weight: 600;
   color: var(--text-tertiary);
   background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 1px 8px;
+  border-radius: 100px;
+  padding: 1px 10px;
 }
 
 .category-toggle {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--text-tertiary);
-  transition: transform 0.2s ease;
+  transition: transform 0.2s var(--ease-out);
 }
 
 .category-section.open .category-toggle {
@@ -486,7 +507,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
 .category-body {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.3s ease;
+  transition: max-height 0.3s var(--ease-out);
 }
 
 .category-section.open .category-body {
@@ -504,14 +525,14 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
 
 .cat-table thead {
   position: sticky;
-  top: 105px;
+  top: 101px;
   z-index: 10;
 }
 
 .cat-table th {
   background: var(--bg);
   font-weight: 600;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--text-tertiary);
@@ -523,7 +544,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
 
 .cat-table td {
   padding: 10px 12px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--divider);
   vertical-align: top;
 }
 
@@ -531,8 +552,12 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   border-bottom: none;
 }
 
+.cat-table tbody tr {
+  transition: background 0.12s ease;
+}
+
 .cat-table tbody tr:hover {
-  background: #F5F5F3;
+  background: #F5F4F0;
 }
 
 .cat-table .col-repo {
@@ -547,7 +572,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
 }
 
 .cat-table .col-repo a:hover {
-  color: var(--link);
+  color: var(--link-hover);
 }
 
 .cat-table .col-desc {
@@ -586,7 +611,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   max-width: 1280px;
   margin: 0 auto;
   padding: 24px;
-  text-align: center;
+  text-align: left;
   font-size: 0.8rem;
   color: var(--text-tertiary);
   border-top: 1px solid var(--border);
@@ -596,12 +621,16 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   color: var(--text-secondary);
 }
 
+.footer a:hover {
+  color: var(--text);
+}
+
 /* ================================================================
    Responsive
    ================================================================ */
 @media (max-width: 768px) {
-  .hero { padding: 32px 16px 24px; }
-  .hero-title { font-size: 1.5rem; }
+  .hero { padding: 36px 16px 24px; }
+  .hero-title { font-size: 1.75rem; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .filter-bar { padding: 0 16px 16px; }
   .filter-bar-inner { flex-direction: column; align-items: stretch; }
@@ -617,6 +646,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
 @media (max-width: 480px) {
   .stats-grid { grid-template-columns: 1fr; }
   .stat-value { font-size: 1.4rem; }
+  .hero-title { font-size: 1.5rem; }
 }
 
 /* ================================================================
@@ -782,7 +812,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   document.getElementById('generatedDate').textContent = generatedDate;
 
   // -----------------------------------------------------------
-  // Render stats cards
+  // Render stats cards with staggered reveal
   // -----------------------------------------------------------
   (function renderStats() {
     var grid = document.getElementById('statsGrid');
@@ -836,6 +866,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
     cards.forEach(function (card, i) {
       var el = document.createElement('div');
       el.className = 'stat-card';
+      el.style.setProperty('--index', i);
       el.innerHTML =
         '<div class="stat-label">' + esc(card.label) + '</div>' +
         '<div class="stat-value">' + esc(card.value) + '</div>' +
@@ -937,8 +968,9 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
       var wrapper = document.createElement('div');
       wrapper.innerHTML = repoCardHTML(repo, i + 1);
       var card = wrapper.firstChild;
+      card.style.setProperty('--index', i);
       grid.appendChild(card);
-      // Scroll-reveal via IntersectionObserver
+      // Staggered reveal
       setTimeout(function () {
         card.classList.add('visible');
       }, 60 * i);
