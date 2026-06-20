@@ -15,10 +15,10 @@ jobs:
       - name: Checkout self
         uses: actions/checkout@v4
 
-      - name: Checkout upstream bonfy/github-trending
+      - name: Checkout trending snapshot source
         uses: actions/checkout@v4
         with:
-          repository: bonfy/github-trending
+          repository: ${{ vars.TRENDING_SOURCE_REPO }}
           path: upstream
 
       - name: Set up Python

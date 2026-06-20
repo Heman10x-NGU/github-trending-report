@@ -2,7 +2,7 @@
 """
 build.py -- GitHub Trending Report generator.
 
-Scans upstream bonfy/github-trending .md files, parses repos,
+Scans date-named GitHub Trending markdown files, parses repos,
 deduplicates, categorizes, and writes an HTML report.
 
 Usage:
@@ -499,8 +499,7 @@ def generate_html(
 <h2>By Category</h2>
 {category_sections}
 
-<p class="meta">Data sourced from <a href="https://github.com/bonfy/github-trending">bonfy/github-trending</a>.
-Built with Python stdlib only.</p>
+<p class="meta">Generated daily with GitHub Actions. Built with Python stdlib only.</p>
 </body>
 </html>
 """
