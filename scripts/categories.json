@@ -1,0 +1,95 @@
+{
+  "categories": {
+    "Agent Frameworks & Orchestration": {
+      "keywords": ["agent framework", "multi-agent", "orchestration", "crewai", "autogen", "chatdev", "hatchet", "agent-platform", "swarm", "agentic framework", "agent sdk"],
+      "subcategory_of": null
+    },
+    "Agent Skills & Plugins": {
+      "keywords": ["mcp server", "mcp-server", "skill", "plugin", "agent skill", "tool use", "function call", "agent tool", "claude skill", "codex skill", "cursor skill"],
+      "subcategory_of": "Agent Frameworks & Orchestration"
+    },
+    "Agent Memory & RAG": {
+      "keywords": ["memory", "rag", "retrieval", "vector", "embed", "cognee", "mem0", "honcho", "ragflow", "knowledge graph", "context window", "long context"],
+      "subcategory_of": "Agent Frameworks & Orchestration"
+    },
+    "Coding Agents": {
+      "keywords": ["coding agent", "code agent", "claude code", "codex", "cursor", "copilot", "aider", "open-swe", "plandex", "code generation", "ai coding", "code assistant", "ide agent", "agentic coding", "crush"],
+      "subcategory_of": "Agent Frameworks & Orchestration"
+    },
+    "Browser & Web Agents": {
+      "keywords": ["browser agent", "web agent", "browser-use", "camofox", "web automation", "scraping agent", "web scraping agent"],
+      "subcategory_of": "Agent Frameworks & Orchestration"
+    },
+    "Research & Science Agents": {
+      "keywords": ["research agent", "autoresearch", "scientific agent", "paper agent", "research automation"],
+      "subcategory_of": "Agent Frameworks & Orchestration"
+    },
+    "LLM Infrastructure": {
+      "keywords": ["llm", "inference", "serving", "vllm", "quantization", "fine-tun", "model serving", "ollama", "lmstudio", "localai", "mlx", "gguf", "tokenizer", "tts", "speech", "text-to-speech", "llama", "model router", "prompt management", "llm gateway"],
+      "subcategory_of": null
+    },
+    "AI/ML Models & Research": {
+      "keywords": ["foundation model", "pretrained", "transformer", "diffusion", "neural", "deep learning", "timesfm", "rf-detr", "paddleocr", "vision model", "language model", "benchmark", "evaluation", "training"],
+      "subcategory_of": null
+    },
+    "Developer Tools & CLI": {
+      "keywords": ["cli", "terminal", "shell", "command-line", "developer tool", "code editor", "ide", "vim", "neovim", "zed", "xcode", "linter", "formatter", "debugger", "git tool", "dev tool", "npm package", "package manager", "bundler", "build tool"],
+      "subcategory_of": null
+    },
+    "Observability & Monitoring": {
+      "keywords": ["observ", "monitor", "trace", "metric", "log", "alert", "prometheus", "grafana", "opentelemetry", "otel", "sentry", "datadog", "apm", "dashboard", "log viewer"],
+      "subcategory_of": null
+    },
+    "Web Frameworks & Frontend": {
+      "keywords": ["react", "vue", "angular", "nextjs", "next.js", "svelte", "css", "tailwind", "frontend", "ui framework", "web framework", "fastapi", "express", "django", "flask", "hono", "animation library", "three.js", "gsap", "webgl", "webgpu"],
+      "subcategory_of": null
+    },
+    "DevOps & Cloud": {
+      "keywords": ["kubernetes", "k8s", "docker", "container", "ci/cd", "terraform", "ansible", "helm", "argocd", "cloud", "deploy", "infrastructure", "devops", "gitops", "server", "vps", "self-hosted", "homelab", "device management"],
+      "subcategory_of": null
+    },
+    "Security & Privacy": {
+      "keywords": ["security", "vulnerability", "vuln", "scanner", "pentest", "exploit", "cve", "encryption", "privacy", "auth", "oauth", "firewall", "waf", "nuclei", "blocker", "adblock", "vpn", "proxy", "wireguard", "xray", "censorship", "dns"],
+      "subcategory_of": null
+    },
+    "Data & Databases": {
+      "keywords": ["database", "db", "sql", "postgres", "mysql", "redis", "mongodb", "vector-db", "chromadb", "pinecone", "data pipeline", "etl", "analytics", "clickhouse", "data processing", "document management"],
+      "subcategory_of": null
+    },
+    "Mobile & Desktop": {
+      "keywords": ["ios", "android", "swift", "kotlin", "react-native", "flutter", "desktop", "electron", "tauri", "macos", "menu-bar", "menubar", "window manager", "launcher", "dock", "notch"],
+      "subcategory_of": null
+    },
+    "API & Backend": {
+      "keywords": ["api", "rest", "graphql", "grpc", "backend", "microservice", "gateway", "proxy", "middleware", "sdk", "server-side", "http client"],
+      "subcategory_of": null
+    },
+    "Content & Media": {
+      "keywords": ["video", "audio", "image", "media", "streaming", "podcast", "transcription", "generative", "image gen", "video gen", "camera", "photo", "music", "player", "iptv", "downloader", "diagram", "chart"],
+      "subcategory_of": null
+    },
+    "Finance & Trading": {
+      "keywords": ["trading", "finance", "quant", "stock", "crypto", "blockchain", "payment", "billing", "fintech", "hedge fund", "portfolio", "market", "financial", "revenue", "invoice"],
+      "subcategory_of": null
+    },
+    "Education & Learning": {
+      "keywords": ["tutorial", "course", "learn", "education", "guide", "example", "cookbook", "curriculum", "bootcamp", "textbook", "documentation tool"],
+      "subcategory_of": null
+    },
+    "Programming Languages & Runtimes": {
+      "keywords": ["programming language", "compiler", "runtime", "interpreter", "golang", "rust lang", "typescript compiler", "python runtime", "node runtime"],
+      "subcategory_of": null
+    },
+    "Networking & VPN": {
+      "keywords": ["vpn", "proxy", "xray", "wireguard", "tailscale", "netbird", "dns", "tunnel", "gost", "adguard", "censorship bypass", "spoofdpi", "network tool"],
+      "subcategory_of": null
+    }
+  },
+  "significance": {
+    "legendary": 50,
+    "hot": 20,
+    "rising": 10,
+    "notable": 4,
+    "new": 1
+  }
+}

@@ -1,0 +1,43 @@
+name: Update Trending Report
+
+on:
+  schedule:
+    - cron: "30 18 * * *"   # 11:30 PM IST (18:30 UTC)
+  workflow_dispatch:          # allow manual trigger
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout self
+        uses: actions/checkout@v4
+
+      - name: Checkout upstream bonfy/github-trending
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          repository: bonfy/github-trending
+          path: upstream
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Build report
+        run: python scripts/build.py --upstream upstream/ --output docs/index.html
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/ docs/
+          git diff --cached --quiet && exit 0
+          git commit -m "chore: update trending report $(date -u +%Y-%m-%d)"
+          git push

@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GitHub Trending Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ================================================================
+   Design System
+   ================================================================ */
+:root {
+  --bg: #FAFAF9;
+  --card: #FFFFFF;
+  --border: #E8E8E5;
+  --text: #1A1A1A;
+  --text-secondary: #6B6B6B;
+  --text-tertiary: #9B9B9B;
+  --link: #2563EB;
+  --link-hover: #1D4ED8;
+  --sig-legendary: #DC2626;
+  --sig-hot: #2563EB;
+  --sig-rising: #7C3AED;
+  --sig-notable: #16A34A;
+  --sig-new: #CA8A04;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  --radius: 8px;
+  --radius-sm: 4px;
+}
+
+/* ================================================================
+   Reset & Base
+   ================================================================ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a { color: var(--link); text-decoration: none; }
+a:hover { color: var(--link-hover); text-decoration: underline; }
+
+/* ================================================================
+   Sticky Header
+   ================================================================ */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 0;
+}
+
+.header-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.header-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.header-title span {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-left: 8px;
+}
+
+.header-meta {
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+
+/* ================================================================
+   Hero Section
+   ================================================================ */
+.hero {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 48px 24px 32px;
+}
+
+.hero-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.025em;
+  margin-bottom: 8px;
+}
+
+.hero-subtitle {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.stat-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.stat-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.stat-detail {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+/* ================================================================
+   Filter Bar
+   ================================================================ */
+.filter-bar {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px 24px;
+  position: sticky;
+  top: 53px;
+  z-index: 90;
+  background: var(--bg);
+}
+
+.filter-bar-inner {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.filter-select {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  padding: 6px 28px 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%236B6B6B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+}
+
+.filter-select:focus {
+  outline: 2px solid var(--link);
+  outline-offset: -1px;
+}
+
+.filter-search {
+  flex: 1;
+  min-width: 200px;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--text);
+}
+
+.filter-search:focus {
+  outline: 2px solid var(--link);
+  outline-offset: -1px;
+}
+
+.filter-search::placeholder {
+  color: var(--text-tertiary);
+}
+
+.filter-count {
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
+
+/* ================================================================
+   Content Container
+   ================================================================ */
+.content {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px 64px;
+}
+
+/* ================================================================
+   Section Headings
+   ================================================================ */
+.section-heading {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 32px 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--border);
+}
+
+.section-heading .count {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--text-tertiary);
+  margin-left: 8px;
+}
+
+/* ================================================================
+   Top 30 Grid
+   ================================================================ */
+.top30-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.repo-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.repo-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.repo-card:hover {
+  border-color: #D0D0CC;
+}
+
+.repo-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.repo-name {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 500;
+  line-height: 1.3;
+  word-break: break-all;
+}
+
+.repo-name a {
+  color: var(--text);
+}
+
+.repo-name a:hover {
+  color: var(--link);
+  text-decoration: none;
+}
+
+.repo-rank {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 2px 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.repo-desc {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.repo-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.repo-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  font-family: var(--font-mono);
+}
+
+.repo-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ================================================================
+   Significance Badges
+   ================================================================ */
+.sig-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.7rem;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+.sig-legendary {
+  background: #FEE2E2;
+  color: var(--sig-legendary);
+  border: 1px solid #FECACA;
+}
+
+.sig-hot {
+  background: #DBEAFE;
+  color: var(--sig-hot);
+  border: 1px solid #BFDBFE;
+}
+
+.sig-rising {
+  background: #EDE9FE;
+  color: var(--sig-rising);
+  border: 1px solid #DDD6FE;
+}
+
+.sig-notable {
+  background: #DCFCE7;
+  color: var(--sig-notable);
+  border: 1px solid #BBF7D0;
+}
+
+.sig-new {
+  background: #FEF9C3;
+  color: var(--sig-new);
+  border: 1px solid #FDE68A;
+}
+
+/* ================================================================
+   Category Sections (Collapsible)
+   ================================================================ */
+.category-section {
+  margin-bottom: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+  overflow: hidden;
+}
+
+.category-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s ease;
+}
+
+.category-header:hover {
+  background: var(--bg);
+}
+
+.category-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.category-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.category-count {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1px 8px;
+}
+
+.category-toggle {
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  transition: transform 0.2s ease;
+}
+
+.category-section.open .category-toggle {
+  transform: rotate(180deg);
+}
+
+.category-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.category-section.open .category-body {
+  max-height: 20000px;
+}
+
+/* ================================================================
+   Category Table
+   ================================================================ */
+.cat-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.cat-table thead {
+  position: sticky;
+  top: 105px;
+  z-index: 10;
+}
+
+.cat-table th {
+  background: var(--bg);
+  font-weight: 600;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-tertiary);
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.cat-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.cat-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.cat-table tbody tr:hover {
+  background: #F5F5F3;
+}
+
+.cat-table .col-repo {
+  min-width: 200px;
+}
+
+.cat-table .col-repo a {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.cat-table .col-repo a:hover {
+  color: var(--link);
+}
+
+.cat-table .col-desc {
+  color: var(--text-secondary);
+  max-width: 400px;
+}
+
+.cat-table .col-sig {
+  white-space: nowrap;
+}
+
+.cat-table .col-days {
+  font-family: var(--font-mono);
+  text-align: center;
+  font-size: 0.8rem;
+}
+
+.cat-table .col-dates {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
+
+.cat-table .col-langs {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+/* ================================================================
+   Footer
+   ================================================================ */
+.footer {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  border-top: 1px solid var(--border);
+}
+
+.footer a {
+  color: var(--text-secondary);
+}
+
+/* ================================================================
+   Responsive
+   ================================================================ */
+@media (max-width: 768px) {
+  .hero { padding: 32px 16px 24px; }
+  .hero-title { font-size: 1.5rem; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .filter-bar { padding: 0 16px 16px; }
+  .filter-bar-inner { flex-direction: column; align-items: stretch; }
+  .filter-search { min-width: unset; }
+  .content { padding: 0 16px 48px; }
+  .top30-grid { grid-template-columns: 1fr; }
+  .cat-table { font-size: 0.75rem; }
+  .cat-table th, .cat-table td { padding: 6px 8px; }
+  .cat-table .col-desc { max-width: 200px; }
+  .header-inner { padding: 0 16px; }
+}
+
+@media (max-width: 480px) {
+  .stats-grid { grid-template-columns: 1fr; }
+  .stat-value { font-size: 1.4rem; }
+}
+
+/* ================================================================
+   Utility
+   ================================================================ */
+.hidden { display: none !important; }
+.no-results {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-tertiary);
+  font-size: 0.9rem;
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     Header
+     ============================================================ -->
+<header class="header">
+  <div class="header-inner">
+    <div class="header-title">
+      github-trending<span>report</span>
+    </div>
+    <div class="header-meta" id="generatedDate"></div>
+  </div>
+</header>
+
+<!-- ============================================================
+     Hero
+     ============================================================ -->
+<section class="hero">
+  <h1 class="hero-title">GitHub Trending Report</h1>
+  <p class="hero-subtitle">
+    Categorized analysis of trending repositories. Data sourced from
+    <a href="https://github.com/bonfy/github-trending" target="_blank" rel="noopener">bonfy/github-trending</a>.
+  </p>
+  <div class="stats-grid" id="statsGrid"></div>
+</section>
+
+<!-- ============================================================
+     Filter Bar
+     ============================================================ -->
+<div class="filter-bar">
+  <div class="filter-bar-inner">
+    <div class="filter-group">
+      <label class="filter-label" for="categoryFilter">Category</label>
+      <select class="filter-select" id="categoryFilter">
+        <option value="all">All categories</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label class="filter-label" for="sigFilter">Significance</label>
+      <select class="filter-select" id="sigFilter">
+        <option value="all">All levels</option>
+        <option value="legendary">Legendary</option>
+        <option value="hot">Hot</option>
+        <option value="rising">Rising</option>
+        <option value="notable">Notable</option>
+        <option value="new">New</option>
+      </select>
+    </div>
+    <input
+      type="text"
+      class="filter-search"
+      id="searchInput"
+      placeholder="Search repos, descriptions, languages..."
+      autocomplete="off"
+    >
+    <div class="filter-count" id="filterCount"></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     Content
+     ============================================================ -->
+<main class="content">
+  <!-- Top 30 Section -->
+  <h2 class="section-heading">
+    Top 30 by Appearances<span class="count" id="top30Count"></span>
+  </h2>
+  <div class="top30-grid" id="top30Grid"></div>
+
+  <!-- Categories Section -->
+  <h2 class="section-heading">
+    By Category<span class="count" id="categoryCount"></span>
+  </h2>
+  <div id="categorySections"></div>
+</main>
+
+<!-- ============================================================
+     Footer
+     ============================================================ -->
+<footer class="footer">
+  Data sourced from <a href="https://github.com/bonfy/github-trending" target="_blank" rel="noopener">bonfy/github-trending</a>.
+  Built with Python stdlib. Report template by AdLine.
+</footer>
+
+<!-- ============================================================
+     Embedded Data (injected by build.py)
+     ============================================================ -->
+<script id="report-data" type="application/json">
+{
+  "stats": {{STATS_JSON}},
+  "repos": {{REPOS_JSON}},
+  "categories": {{CATEGORIES_JSON}},
+  "top30": {{TOP30_JSON}},
+  "generated": "{{GENERATED_DATE}}"
+}
+</script>
+
+<!-- ============================================================
+     Application Script
+     ============================================================ -->
+<script>
+(function () {
+  'use strict';
+
+  // -----------------------------------------------------------
+  // Data
+  // -----------------------------------------------------------
+  var rawData;
+  try {
+    rawData = JSON.parse(document.getElementById('report-data').textContent);
+  } catch (e) {
+    document.body.innerHTML = '<div class="no-results">Failed to load report data.</div>';
+    return;
+  }
+
+  var stats = rawData.stats || {};
+  var allRepos = rawData.repos || [];
+  var categories = rawData.categories || {};
+  var top30 = rawData.top30 || [];
+  var generatedDate = rawData.generated || '';
+
+  // -----------------------------------------------------------
+  // Significance helpers
+  // -----------------------------------------------------------
+  var SIG_ORDER = ['legendary', 'hot', 'rising', 'notable', 'new'];
+
+  function sigClass(sig) {
+    var s = (sig || 'new').toLowerCase();
+    return 'sig-' + (SIG_ORDER.indexOf(s) !== -1 ? s : 'new');
+  }
+
+  function sigLabel(sig) {
+    return (sig || 'new').charAt(0).toUpperCase() + (sig || 'new').slice(1);
+  }
+
+  // -----------------------------------------------------------
+  // Escape HTML
+  // -----------------------------------------------------------
+  function esc(str) {
+    if (!str) return '';
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+  }
+
+  // -----------------------------------------------------------
+  // Render generated date
+  // -----------------------------------------------------------
+  document.getElementById('generatedDate').textContent = generatedDate;
+
+  // -----------------------------------------------------------
+  // Render stats cards
+  // -----------------------------------------------------------
+  (function renderStats() {
+    var grid = document.getElementById('statsGrid');
+    var cards = [];
+
+    // Total repos
+    cards.push({
+      label: 'Total Repos',
+      value: (stats.total_repos || allRepos.length).toLocaleString(),
+      detail: 'Unique repositories tracked'
+    });
+
+    // Significance breakdown
+    var sigCounts = stats.significance_counts || {};
+    var legendaryCount = sigCounts.legendary || 0;
+    var hotCount = sigCounts.hot || 0;
+    cards.push({
+      label: 'Legendary',
+      value: legendaryCount.toLocaleString(),
+      detail: '50+ days on trending'
+    });
+    cards.push({
+      label: 'Hot + Rising',
+      value: (hotCount + (sigCounts.rising || 0)).toLocaleString(),
+      detail: '10-49 days trending'
+    });
+
+    // Categories
+    var catCounts = stats.category_counts || [];
+    cards.push({
+      label: 'Categories',
+      value: catCounts.length.toString(),
+      detail: catCounts.length > 0 ? 'Top: ' + catCounts[0][0] : ''
+    });
+
+    // Languages
+    var langCounts = stats.language_counts || [];
+    cards.push({
+      label: 'Languages',
+      value: langCounts.length.toString(),
+      detail: langCounts.length > 0 ? 'Top: ' + langCounts[0][0] : ''
+    });
+
+    // Notable + New
+    cards.push({
+      label: 'New Repos',
+      value: ((sigCounts.notable || 0) + (sigCounts.new || 0)).toLocaleString(),
+      detail: 'Appeared 1-9 days'
+    });
+
+    cards.forEach(function (card, i) {
+      var el = document.createElement('div');
+      el.className = 'stat-card';
+      el.innerHTML =
+        '<div class="stat-label">' + esc(card.label) + '</div>' +
+        '<div class="stat-value">' + esc(card.value) + '</div>' +
+        '<div class="stat-detail">' + esc(card.detail) + '</div>';
+      grid.appendChild(el);
+      // Staggered reveal
+      setTimeout(function () {
+        el.classList.add('visible');
+      }, 80 * i);
+    });
+  })();
+
+  // -----------------------------------------------------------
+  // Populate category filter
+  // -----------------------------------------------------------
+  (function populateCategoryFilter() {
+    var select = document.getElementById('categoryFilter');
+    var catCounts = stats.category_counts || [];
+    catCounts.forEach(function (pair) {
+      var opt = document.createElement('option');
+      opt.value = pair[0];
+      opt.textContent = pair[0] + ' (' + pair[1] + ')';
+      select.appendChild(opt);
+    });
+  })();
+
+  // -----------------------------------------------------------
+  // Build repo card HTML (for Top 30 grid)
+  // -----------------------------------------------------------
+  function repoCardHTML(repo, rank) {
+    var name = esc(repo.full_name);
+    var url = esc(repo.url);
+    var desc = esc(repo.description || 'No description available');
+    var sig = repo.significance || 'new';
+    var count = repo.appearance_count || 0;
+    var langs = (repo.languages || []).filter(Boolean);
+    var langStr = langs.length > 0 ? esc(langs.join(', ')) : '';
+    var cat = esc(repo.primary_category || 'Other');
+
+    return (
+      '<div class="repo-card" data-cat="' + esc(repo.primary_category || 'Other') +
+      '" data-sig="' + esc(sig) +
+      '" data-search="' + esc((repo.full_name + ' ' + (repo.description || '') + ' ' + langs.join(' ')).toLowerCase()) + '">' +
+        '<div class="repo-header">' +
+          '<div class="repo-name"><a href="' + url + '" target="_blank" rel="noopener">' + name + '</a></div>' +
+          '<div class="repo-rank">#' + rank + '</div>' +
+        '</div>' +
+        '<div class="repo-desc">' + desc + '</div>' +
+        '<div class="repo-footer">' +
+          '<span class="sig-badge ' + sigClass(sig) + '">' + esc(sigLabel(sig)) + '</span>' +
+          '<div class="repo-meta">' +
+            '<span class="repo-meta-item">' + count + 'd</span>' +
+            (langStr ? '<span class="repo-meta-item">' + langStr + '</span>' : '') +
+            '<span class="repo-meta-item">' + cat + '</span>' +
+          '</div>' +
+        '</div>' +
+      '</div>'
+    );
+  }
+
+  // -----------------------------------------------------------
+  // Build table row HTML (for category sections)
+  // -----------------------------------------------------------
+  function tableRowHTML(repo) {
+    var name = esc(repo.full_name);
+    var url = esc(repo.url);
+    var desc = esc(repo.description || 'No description available');
+    var sig = repo.significance || 'new';
+    var count = repo.appearance_count || 0;
+    var first = esc(repo.first_seen || '');
+    var last = esc(repo.last_seen || '');
+    var langs = (repo.languages || []).filter(Boolean);
+    var langStr = langs.length > 0 ? esc(langs.join(', ')) : '-';
+    var cat = esc(repo.primary_category || 'Other');
+
+    return (
+      '<tr data-cat="' + esc(repo.primary_category || 'Other') +
+      '" data-sig="' + esc(sig) +
+      '" data-search="' + esc((repo.full_name + ' ' + (repo.description || '') + ' ' + langs.join(' ')).toLowerCase()) + '">' +
+        '<td class="col-repo"><a href="' + url + '" target="_blank" rel="noopener">' + name + '</a></td>' +
+        '<td class="col-desc">' + desc + '</td>' +
+        '<td class="col-sig"><span class="sig-badge ' + sigClass(sig) + '">' + esc(sigLabel(sig)) + '</span></td>' +
+        '<td class="col-days">' + count + '</td>' +
+        '<td class="col-dates">' + first + '</td>' +
+        '<td class="col-dates">' + last + '</td>' +
+        '<td class="col-langs">' + langStr + '</td>' +
+      '</tr>'
+    );
+  }
+
+  // -----------------------------------------------------------
+  // Render Top 30 grid
+  // -----------------------------------------------------------
+  (function renderTop30() {
+    var grid = document.getElementById('top30Grid');
+    var countEl = document.getElementById('top30Count');
+
+    top30.forEach(function (repo, i) {
+      var wrapper = document.createElement('div');
+      wrapper.innerHTML = repoCardHTML(repo, i + 1);
+      var card = wrapper.firstChild;
+      grid.appendChild(card);
+      // Scroll-reveal via IntersectionObserver
+      setTimeout(function () {
+        card.classList.add('visible');
+      }, 60 * i);
+    });
+
+    countEl.textContent = ' (' + top30.length + ')';
+  })();
+
+  // -----------------------------------------------------------
+  // Render category sections
+  // -----------------------------------------------------------
+  (function renderCategories() {
+    var container = document.getElementById('categorySections');
+    var countEl = document.getElementById('categoryCount');
+
+    // Group repos by category
+    var byCat = {};
+    allRepos.forEach(function (repo) {
+      var cat = repo.primary_category || 'Other';
+      if (!byCat[cat]) byCat[cat] = [];
+      byCat[cat].push(repo);
+    });
+
+    // Sort categories by repo count descending
+    var sortedCats = Object.keys(byCat).sort(function (a, b) {
+      return byCat[b].length - byCat[a].length;
+    });
+
+    countEl.textContent = ' (' + sortedCats.length + ')';
+
+    sortedCats.forEach(function (catName) {
+      var repos = byCat[catName];
+      // Sort repos within category by appearance_count desc
+      repos.sort(function (a, b) {
+        return (b.appearance_count || 0) - (a.appearance_count || 0);
+      });
+
+      var section = document.createElement('div');
+      section.className = 'category-section open';
+      section.setAttribute('data-category', catName);
+
+      var rows = repos.map(tableRowHTML).join('');
+
+      section.innerHTML =
+        '<div class="category-header" role="button" tabindex="0" aria-expanded="true">' +
+          '<div class="category-header-left">' +
+            '<span class="category-name">' + esc(catName) + '</span>' +
+            '<span class="category-count">' + repos.length + '</span>' +
+          '</div>' +
+          '<span class="category-toggle">&#9660;</span>' +
+        '</div>' +
+        '<div class="category-body">' +
+          '<table class="cat-table">' +
+            '<thead><tr>' +
+              '<th>Repository</th>' +
+              '<th>Description</th>' +
+              '<th>Significance</th>' +
+              '<th>Days</th>' +
+              '<th>First Seen</th>' +
+              '<th>Last Seen</th>' +
+              '<th>Languages</th>' +
+            '</tr></thead>' +
+            '<tbody>' + rows + '</tbody>' +
+          '</table>' +
+        '</div>';
+
+      container.appendChild(section);
+
+      // Collapse toggle
+      var header = section.querySelector('.category-header');
+      header.addEventListener('click', function () {
+        var isOpen = section.classList.toggle('open');
+        header.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      });
+      header.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          header.click();
+        }
+      });
+    });
+  })();
+
+  // -----------------------------------------------------------
+  // IntersectionObserver for scroll-reveal
+  // -----------------------------------------------------------
+  (function setupScrollReveal() {
+    if (!('IntersectionObserver' in window)) return;
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    // Observe repo cards that haven't been revealed yet
+    document.querySelectorAll('.repo-card:not(.visible)').forEach(function (el) {
+      observer.observe(el);
+    });
+  })();
+
+  // -----------------------------------------------------------
+  // Filtering
+  // -----------------------------------------------------------
+  var categoryFilter = document.getElementById('categoryFilter');
+  var sigFilter = document.getElementById('sigFilter');
+  var searchInput = document.getElementById('searchInput');
+  var filterCountEl = document.getElementById('filterCount');
+
+  function applyFilters() {
+    var catVal = categoryFilter.value;
+    var sigVal = sigFilter.value;
+    var searchVal = searchInput.value.trim().toLowerCase();
+
+    // Filter top 30 cards
+    var top30Cards = document.querySelectorAll('#top30Grid .repo-card');
+    var top30Visible = 0;
+    top30Cards.forEach(function (card) {
+      var matchCat = catVal === 'all' || card.getAttribute('data-cat') === catVal;
+      var matchSig = sigVal === 'all' || card.getAttribute('data-sig') === sigVal;
+      var matchSearch = !searchVal || card.getAttribute('data-search').indexOf(searchVal) !== -1;
+      if (matchCat && matchSig && matchSearch) {
+        card.classList.remove('hidden');
+        top30Visible++;
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+
+    // Update top 30 count
+    document.getElementById('top30Count').textContent = ' (' + top30Visible + ')';
+
+    // Filter category sections
+    var sections = document.querySelectorAll('.category-section');
+    var sectionsVisible = 0;
+    sections.forEach(function (section) {
+      var sectionCat = section.getAttribute('data-category');
+      var matchCat = catVal === 'all' || sectionCat === catVal;
+
+      if (!matchCat) {
+        section.classList.add('hidden');
+        return;
+      }
+
+      // Filter rows within category
+      var rows = section.querySelectorAll('tbody tr');
+      var visibleRows = 0;
+      rows.forEach(function (row) {
+        var matchSig = sigVal === 'all' || row.getAttribute('data-sig') === sigVal;
+        var matchSearch = !searchVal || row.getAttribute('data-search').indexOf(searchVal) !== -1;
+        if (matchSig && matchSearch) {
+          row.classList.remove('hidden');
+          visibleRows++;
+        } else {
+          row.classList.add('hidden');
+        }
+      });
+
+      if (visibleRows > 0) {
+        section.classList.remove('hidden');
+        // Update count badge
+        var countBadge = section.querySelector('.category-count');
+        if (countBadge) countBadge.textContent = visibleRows;
+        sectionsVisible++;
+      } else {
+        section.classList.add('hidden');
+      }
+    });
+
+    // Update category count
+    document.getElementById('categoryCount').textContent = ' (' + sectionsVisible + ')';
+
+    // Update filter count
+    var totalVisible = top30Visible;
+    sections.forEach(function (s) {
+      if (!s.classList.contains('hidden')) {
+        totalVisible += s.querySelectorAll('tbody tr:not(.hidden)').length;
+      }
+    });
+    filterCountEl.textContent = totalVisible + ' repos shown';
+  }
+
+  // Debounced search
+  var searchTimeout;
+  searchInput.addEventListener('input', function () {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(applyFilters, 200);
+  });
+
+  categoryFilter.addEventListener('change', applyFilters);
+  sigFilter.addEventListener('change', applyFilters);
+
+  // Initial count
+  filterCountEl.textContent = allRepos.length + ' repos shown';
+
+})();
+</script>
+</body>
+</html>
