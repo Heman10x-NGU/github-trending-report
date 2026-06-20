@@ -98,6 +98,9 @@ def parse_upstream_files(upstream_dir: str) -> list[dict]:
     # De-dup just in case a file matches both patterns
     files = sorted(set(files))
 
+    # Only process 2026 files (filter out older years)
+    files = [f for f in files if "/2026-" in f or f.endswith("/2026-") or os.path.basename(f).startswith("2026-")]
+
     entries: list[dict] = []
     for fpath in files:
         # Extract date from filename
