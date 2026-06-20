@@ -1,0 +1,405 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "GitHub Trending Report — synthesized from Linear (tight tracking, data density), Vercel (Geist font, stark contrast, stacked shadows), and PostHog (warm canvas, bordered cards).",
+
+  "colors": {
+    "canvas": "#eeefe9",
+    "canvas-soft": "#f5f5f0",
+    "surface-card": "#ffffff",
+    "surface-code": "#23251d",
+
+    "ink": "#23251d",
+    "ink-secondary": "#171717",
+    "body": "#4d4f46",
+    "mute": "#6c6e63",
+    "ash": "#9b9c92",
+
+    "primary": "#5e6ad2",
+    "primary-hover": "#828fff",
+    "primary-pressed": "#4a56b8",
+    "on-primary": "#ffffff",
+
+    "accent-blue": "#0070f3",
+    "accent-teal": "#50e3c2",
+    "accent-orange": "#f7a501",
+    "accent-red": "#cd4239",
+    "accent-green": "#27a644",
+    "accent-purple": "#7928ca",
+
+    "accent-blue-soft": "#dceaf6",
+    "accent-teal-soft": "#aaffec",
+    "accent-orange-soft": "#ffefcf",
+    "accent-red-soft": "#f7d6d3",
+    "accent-green-soft": "#d9eddf",
+    "accent-purple-soft": "#e7d8ee",
+
+    "hairline": "#bfc1b7",
+    "hairline-soft": "#dcdfd2",
+    "hairline-strong": "#a1a1a1",
+
+    "link": "#0070f3",
+    "link-deep": "#0761d1",
+
+    "error": "#ee0000",
+    "warning": "#f5a623",
+    "success": "#27a644",
+    "info": "#0070f3"
+  },
+
+  "typography": {
+    "fontFamilies": {
+      "sans": "Geist, Inter, system-ui, -apple-system, sans-serif",
+      "mono": "Geist Mono, ui-monospace, SFMono-Regular, Menlo, Monaco, monospace"
+    },
+
+    "display-2xl": {
+      "fontFamily": "{fontFamilies.sans}",
+      "fontSize": "48px",
+      "fontWeight": 600,
+      "lineHeight": 1.0,
+      "letterSpacing": "-2.4px",
+      "comment": "Hero report title — Vercel scale + Linear's aggressive tracking"
+    },
+    "display-xl": {
+      "fontFamily": "{fontFamilies.sans}",
+      "fontSize": "36px",
+      "fontWeight": 600,
+      "lineHeight": 1.1,
+      "letterSpacing": "-1.8px",
+      "comment": "Section headers — PostHog size, Linear tracking intensity"
+    },
+    "display-lg": {
+      "fontFamily": "{fontFamilies.sans}",
+      "fontSize": "28px",
+      "fontWeight": 600,
+      "lineHeight": 1.2,
+      "letterSpacing": "-1.0px",
+      "comment": "Subsection headers, card cluster titles"
+    },
+    "display-md": {
+      "fontFamily": "{fontFamilies.sans}",
+      "fontSize": "22px",
+      "fontWeight": 600,
+      "lineHeight": 1.25,
+      "letterSpacing": "-0.6px",
+      "comment": "Card titles, metric labels"
+    },
+    "heading-lg": {
+      "fontFamily": "{fontFamilies.sans}",
+      "fontSize": "18px",
+      "fontWeight": 700,
+      "lineHeight": 1.4,
+      "letterSpacing": "-0.3px",
+      "comment": "PostHog weight 700 heading style"
+    },
+    "heading-md": {
+      "fontFamily": "{fontFamilies.sans}",
+      "fontSize": "16px",
+      "fontWeight": 600,
+      "lineHeight": 1.5,
+      "letterSpacing": "-0.2px",
+      "comment": "Inline emphasis, nav labels"
+    },
+    "body-lg": {
+      "fontFamily": "{fontFamilies.sans}",
+      "fontSize": "18px",
+      "fontWeight": 400,
+      "lineHeight": 1.5,
+      "letterSpacing": "0",
+      "comment": "Lead paragraphs under section headers"
+    },
+    "body-md": {
+      "fontFamily": "{fontFamilies.sans}",
+      "fontSize": "16px",
+      "fontWeight": 400,
+      "lineHeight": 1.5,
+      "letterSpacing": "-0.05px",
+      "comment": "Default body — Linear's subtle negative tracking"
+    },
+    "body-sm": {
+      "fontFamily": "{fontFamilies.sans}",
+      "fontSize": "14px",
+      "fontWeight": 400,
+      "lineHeight": 1.5,
+      "letterSpacing": "0",
+      "comment": "Secondary body, card descriptions"
+    },
+    "body-xs": {
+      "fontFamily": "{fontFamilies.sans}",
+      "fontSize": "13px",
+      "fontWeight": 400,
+      "lineHeight": 1.5,
+      "letterSpacing": "0",
+      "comment": "Metadata, captions, repo descriptions"
+    },
+    "caption": {
+      "fontFamily": "{fontFamilies.sans}",
+      "fontSize": "12px",
+      "fontWeight": 500,
+      "lineHeight": 1.33,
+      "letterSpacing": "0.4px",
+      "comment": "Eyebrow labels — Linear's positive tracking for taxonomy"
+    },
+    "caption-uppercase": {
+      "fontFamily": "{fontFamilies.sans}",
+      "fontSize": "12px",
+      "fontWeight": 600,
+      "lineHeight": 1.33,
+      "letterSpacing": "0.4px",
+      "textTransform": "uppercase",
+      "comment": "PostHog-style uppercase eyebrows"
+    },
+    "metric-xl": {
+      "fontFamily": "{fontFamilies.sans}",
+      "fontSize": "32px",
+      "fontWeight": 700,
+      "lineHeight": 1.0,
+      "letterSpacing": "-1.28px",
+      "comment": "Large stat numbers — star counts, trending scores"
+    },
+    "metric-lg": {
+      "fontFamily": "{fontFamilies.sans}",
+      "fontSize": "24px",
+      "fontWeight": 700,
+      "lineHeight": 1.1,
+      "letterSpacing": "-0.6px",
+      "comment": "Medium stat numbers"
+    },
+    "metric-md": {
+      "fontFamily": "{fontFamilies.sans}",
+      "fontSize": "18px",
+      "fontWeight": 600,
+      "lineHeight": 1.2,
+      "letterSpacing": "-0.3px",
+      "comment": "Inline metrics, delta values"
+    },
+    "metric-sm": {
+      "fontFamily": "{fontFamilies.sans}",
+      "fontSize": "14px",
+      "fontWeight": 600,
+      "lineHeight": 1.3,
+      "letterSpacing": "0",
+      "comment": "Small metric labels"
+    },
+    "mono": {
+      "fontFamily": "{fontFamilies.mono}",
+      "fontSize": "13px",
+      "fontWeight": 400,
+      "lineHeight": 1.5,
+      "letterSpacing": "0",
+      "comment": "Repo URLs, language names, code references"
+    },
+    "mono-sm": {
+      "fontFamily": "{fontFamilies.mono}",
+      "fontSize": "12px",
+      "fontWeight": 400,
+      "lineHeight": 1.4,
+      "letterSpacing": "0",
+      "comment": "Inline code chips, timestamps"
+    },
+    "button-md": {
+      "fontFamily": "{fontFamilies.sans}",
+      "fontSize": "14px",
+      "fontWeight": 500,
+      "lineHeight": 1.2,
+      "letterSpacing": "0",
+      "comment": "Standard button labels"
+    },
+    "button-sm": {
+      "fontFamily": "{fontFamilies.sans}",
+      "fontSize": "13px",
+      "fontWeight": 500,
+      "lineHeight": 1.0,
+      "letterSpacing": "0",
+      "comment": "Compact pill buttons"
+    }
+  },
+
+  "rounded": {
+    "none": "0px",
+    "xs": "2px",
+    "sm": "4px",
+    "md": "6px",
+    "lg": "8px",
+    "xl": "12px",
+    "pill": "9999px"
+  },
+
+  "shadows": {
+    "none": "none",
+    "hairline": "0 0 0 1px {colors.hairline}",
+    "level-1": "0 1px 1px rgba(0,0,0,0.04), 0 0 0 1px {colors.hairline-soft}",
+    "level-2": "0 1px 2px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04), 0 0 0 1px {colors.hairline-soft}",
+    "level-3": "0 2px 4px rgba(0,0,0,0.06), 0 8px 16px rgba(0,0,0,0.06), 0 0 0 1px {colors.hairline}",
+    "level-4": "0 2px 4px rgba(0,0,0,0.08), 0 12px 24px rgba(0,0,0,0.08), 0 0 0 1px {colors.hairline}",
+    "comment": "Vercel-style stacked shadows + PostHog-style hairline border"
+  },
+
+  "spacing": {
+    "xxs": "2px",
+    "xs": "4px",
+    "sm": "8px",
+    "md": "12px",
+    "lg": "16px",
+    "xl": "24px",
+    "2xl": "32px",
+    "3xl": "48px",
+    "4xl": "64px",
+    "section": "80px"
+  },
+
+  "components": {
+    "report-header": {
+      "backgroundColor": "{colors.canvas}",
+      "textColor": "{colors.ink}",
+      "typography": "{typography.display-2xl}",
+      "padding": "{spacing.4xl} {spacing.xl}",
+      "comment": "Top of report — title + date + summary stats"
+    },
+
+    "section-header": {
+      "backgroundColor": "{colors.canvas}",
+      "textColor": "{colors.ink}",
+      "typography": "{typography.display-xl}",
+      "padding": "{spacing.section} {spacing.xl} {spacing.xl}",
+      "comment": "Major section divider (Top Repos, Languages, Rising Stars)"
+    },
+
+    "repo-card": {
+      "backgroundColor": "{colors.surface-card}",
+      "textColor": "{colors.ink}",
+      "typography": "{typography.body-md}",
+      "rounded": "{rounded.md}",
+      "padding": "{spacing.xl}",
+      "shadow": "{shadows.level-2}",
+      "comment": "PostHog-style bordered card on warm canvas + Vercel stacked shadow"
+    },
+
+    "repo-card-featured": {
+      "backgroundColor": "{colors.surface-card}",
+      "textColor": "{colors.ink}",
+      "typography": "{typography.body-md}",
+      "rounded": "{rounded.md}",
+      "padding": "{spacing.xl}",
+      "shadow": "{shadows.level-3}",
+      "borderLeft": "3px solid {colors.primary}",
+      "comment": "Featured repo — lavender accent rail (Linear)"
+    },
+
+    "stat-card": {
+      "backgroundColor": "{colors.surface-card}",
+      "textColor": "{colors.ink}",
+      "typography": "{typography.metric-xl}",
+      "rounded": "{rounded.md}",
+      "padding": "{spacing.lg} {spacing.xl}",
+      "shadow": "{shadows.hairline}",
+      "comment": "KPI card — star count, fork count, trending score"
+    },
+
+    "metric-row": {
+      "backgroundColor": "transparent",
+      "textColor": "{colors.body}",
+      "typography": "{typography.body-sm}",
+      "rounded": "{rounded.none}",
+      "padding": "{spacing.sm} 0",
+      "borderBottom": "1px solid {colors.hairline-soft}",
+      "comment": "Dense data row in tables — PostHog hairline dividers"
+    },
+
+    "language-chip": {
+      "backgroundColor": "{colors.accent-blue-soft}",
+      "textColor": "{colors.accent-blue}",
+      "typography": "{typography.caption}",
+      "rounded": "{rounded.pill}",
+      "padding": "2px 8px",
+      "comment": "Language tag pill"
+    },
+
+    "topic-tag": {
+      "backgroundColor": "{colors.canvas-soft}",
+      "textColor": "{colors.body}",
+      "typography": "{typography.mono-sm}",
+      "rounded": "{rounded.sm}",
+      "padding": "2px 6px",
+      "comment": "Topic keyword chip — mono voice for technical taxonomy"
+    },
+
+    "delta-badge-positive": {
+      "backgroundColor": "{colors.accent-green-soft}",
+      "textColor": "{colors.accent-green}",
+      "typography": "{typography.metric-sm}",
+      "rounded": "{rounded.pill}",
+      "padding": "2px 8px",
+      "comment": "Positive change indicator"
+    },
+
+    "delta-badge-negative": {
+      "backgroundColor": "{colors.accent-red-soft}",
+      "textColor": "{colors.accent-red}",
+      "typography": "{typography.metric-sm}",
+      "rounded": "{rounded.pill}",
+      "padding": "2px 8px",
+      "comment": "Negative change indicator"
+    },
+
+    "code-block": {
+      "backgroundColor": "{colors.surface-code}",
+      "textColor": "#ffffff",
+      "typography": "{typography.mono}",
+      "rounded": "{rounded.md}",
+      "padding": "{spacing.lg} {spacing.xl}",
+      "comment": "PostHog-style dark code surface on warm canvas"
+    },
+
+    "inline-code": {
+      "backgroundColor": "{colors.canvas-soft}",
+      "textColor": "{colors.ink}",
+      "typography": "{typography.mono-sm}",
+      "rounded": "{rounded.xs}",
+      "padding": "2px 6px",
+      "comment": "Inline repo name or command reference"
+    },
+
+    "eyebrow-label": {
+      "backgroundColor": "transparent",
+      "textColor": "{colors.mute}",
+      "typography": "{typography.caption-uppercase}",
+      "rounded": "{rounded.none}",
+      "padding": "0",
+      "comment": "PostHog-style uppercase section eyebrow"
+    },
+
+    "table-header": {
+      "backgroundColor": "{colors.canvas-soft}",
+      "textColor": "{colors.mute}",
+      "typography": "{typography.caption-uppercase}",
+      "rounded": "{rounded.none}",
+      "padding": "{spacing.sm} {spacing.md}",
+      "borderBottom": "2px solid {colors.hairline}",
+      "comment": "Data table column header"
+    },
+
+    "table-cell": {
+      "backgroundColor": "transparent",
+      "textColor": "{colors.body}",
+      "typography": "{typography.body-sm}",
+      "rounded": "{rounded.none}",
+      "padding": "{spacing.sm} {spacing.md}",
+      "borderBottom": "1px solid {colors.hairline-soft}",
+      "comment": "Data table body cell"
+    },
+
+    "divider-section": {
+      "backgroundColor": "transparent",
+      "borderBottom": "1px solid {colors.hairline}",
+      "margin": "{spacing.section} 0",
+      "comment": "PostHog-style section divider — hairline only, no decoration"
+    }
+  },
+
+  "_provenance": {
+    "linear": "tight tracking (-2.4px at 48px), data density, lavender accent (#5e6ad2), surface ladder elevation, caption positive tracking (+0.4px)",
+    "vercel": "Geist font family, stark black/white contrast, stacked multi-offset shadows, pill CTAs, code in Geist Mono",
+    "posthog": "warm cream canvas (#eeefe9), olive-charcoal ink (#23251d), bordered cards with hairline, weight-heavy hierarchy (400-700), 6px base radius, uppercase eyebrows, no drop shadows on cards"
+  }
+}
