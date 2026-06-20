@@ -1,85 +1,78 @@
 # GitHub Trending Report
 
-A searchable, categorized daily report of repositories appearing on GitHub Trending.
+A searchable, categorized daily report for repositories appearing on GitHub Trending.
 
-**Live report:** https://heman10x-ngu.github.io/github-trending-report/  
-**Source data:** https://github.com/bonfy/github-trending
+[Live report](https://heman10x-ngu.github.io/github-trending-report/) · [Repository](https://github.com/Heman10x-NGU/github-trending-report)
 
-GitHub Trending is useful, but it is noisy when you want to spot durable themes. This project turns raw trending snapshots into a static report with categories, significance labels, appearance counts, first/last seen dates, language filters, and search.
+## Overview
 
-## What You Get
+GitHub Trending is useful for discovery, but the raw feed is hard to scan once you want patterns instead of individual links. This project generates a static report that groups trending repositories by category, tracks repeat appearances, and makes the result searchable from a GitHub Pages site.
 
-- Daily GitHub Actions refresh at 11:30 PM IST
-- Searchable static site served by GitHub Pages
-- Category grouping for AI agents, LLM infrastructure, developer tools, security, data, DevOps, frontend, finance, and more
+The site is rebuilt automatically with GitHub Actions and published from the `docs/` directory. There is no backend service, database, or paid API dependency.
+
+## Features
+
+- Search across repository names, descriptions, and languages
+- Category filters for AI agents, LLM infrastructure, developer tools, security, data, DevOps, frontend, finance, and more
 - Significance labels based on repeat appearances: `new`, `notable`, `rising`, `hot`, `legendary`
-- Top 30 repositories by appearance count
-- No backend, no database, no paid API dependency
+- First seen and last seen dates for each repository
+- Top repositories ranked by appearance count
+- Fully static GitHub Pages deployment
+- Daily scheduled refresh via GitHub Actions
 
 ## How It Works
 
-1. GitHub Actions runs on a daily cron and can also be triggered manually.
-2. The workflow checks out this repo and the upstream [`bonfy/github-trending`](https://github.com/bonfy/github-trending) data repo.
-3. [`scripts/build.py`](scripts/build.py) parses 2026 trending markdown files.
-4. Repositories are deduplicated, categorized, scored by appearance count, and rendered into [`docs/index.html`](docs/index.html).
-5. GitHub Pages serves the generated report from the `docs/` directory.
+1. A GitHub Actions workflow runs daily or manually.
+2. The workflow collects the latest trending snapshot data.
+3. [`scripts/build.py`](scripts/build.py) parses, deduplicates, categorizes, and scores repositories.
+4. The HTML report is rendered from [`templates/report.html`](templates/report.html).
+5. The generated output is committed to [`docs/index.html`](docs/index.html), which GitHub Pages serves.
 
-## Categories
-
-Category rules live in [`scripts/categories.json`](scripts/categories.json). Current top-level groups include:
-
-| Category | What it catches |
-|---|---|
-| Agent Frameworks & Orchestration | Multi-agent systems, agent runtimes, orchestration frameworks |
-| Agent Memory & RAG | Retrieval, memory, embeddings, knowledge graphs, long-context tooling |
-| Coding Agents | AI coding tools, IDE agents, code assistants |
-| LLM Infrastructure | Inference, serving, model routing, local LLM tooling |
-| Developer Tools & CLI | Terminals, shells, package managers, editors, build tools |
-| Security & Privacy | Scanners, auth, proxies, privacy/security utilities |
-| Data & Databases | Databases, analytics, ETL, document/data tooling |
-| DevOps & Cloud | Containers, CI/CD, infrastructure, deployment, self-hosting |
-| Web Frameworks & Frontend | Frontend frameworks, web tooling, UI libraries |
-| Finance & Trading | Trading, crypto, payments, finance, billing |
-
-## Local Usage
+## Local Development
 
 ```bash
 git clone https://github.com/Heman10x-NGU/github-trending-report.git
 cd github-trending-report
 
-git clone https://github.com/bonfy/github-trending.git upstream
-python scripts/build.py --upstream upstream --output docs/index.html
+# Prepare a local directory containing GitHub Trending markdown snapshots.
+# The build script expects date-named .md files such as 2026-06-20.md.
+python scripts/build.py --upstream ./upstream --output docs/index.html
+
 python -m http.server -d docs 8000
 ```
 
 Open http://localhost:8000.
 
+## Configuration
+
+Category and significance rules live in [`scripts/categories.json`](scripts/categories.json).
+
+Significance thresholds:
+
+| Label | Appearance count |
+|---|---:|
+| `legendary` | 50+ |
+| `hot` | 20-49 |
+| `rising` | 10-19 |
+| `notable` | 4-9 |
+| `new` | 1-3 |
+
+To change categorization, edit the keyword lists in `scripts/categories.json` and rerun the build script.
+
 ## Project Structure
 
 ```text
 github-trending-report/
-├── .github/workflows/update.yml   # Daily cron job
+├── .github/workflows/update.yml   # Scheduled report refresh
+├── docs/index.html                # Generated GitHub Pages output
 ├── scripts/
 │   ├── build.py                   # Report generator
 │   └── categories.json            # Category and significance rules
-├── templates/report.html          # Static site template
-├── docs/index.html                # Generated GitHub Pages output
-├── design-tokens.json             # Visual system tokens
-├── LAUNCH.md                      # Suggested places to share the project
+├── templates/report.html          # HTML/CSS/JS template
+├── design-tokens.json             # Visual design tokens
+├── requirements.txt               # Python dependency file
 └── README.md
 ```
-
-## Good Launch Angles
-
-- "I built a searchable daily report of GitHub Trending so it is easier to spot durable developer trends."
-- "GitHub Trending is noisy, so I grouped repos by category and repeat appearances."
-- "No backend: GitHub Actions plus GitHub Pages turns public trending data into a daily static report."
-
-See [`LAUNCH.md`](LAUNCH.md) for posting targets and suggested titles.
-
-## Credits
-
-Trending data is sourced from [`bonfy/github-trending`](https://github.com/bonfy/github-trending).
 
 ## License
 
